@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { TransitionContext } from '@/context/TransitionContext';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+
+
 export default function Index() {
 
   const { timeline } = useContext(TransitionContext);
@@ -17,19 +19,14 @@ export default function Index() {
   }, {scope: container})
 
   return (
-    <div ref={container} className='h-[200vh] flex'>
-      <div className="h-[100vh] w-full flex flex-col justify-center items-center gap-5">
-        <p className="text-[5vw]">About</p>
+    <section ref={container} className='h-[200vh] w-full pt-24'>
+      <div className="h-[100vh] w-5/6 flex flex-col gap-5 m-auto">
+        <p className="text-3xl text-left">About Me</p>
+        <div className='flex flex-col justify-center items-center'>
         <p className="max-w-[50%] text-center">Sed ut rhoncus nibh. Cras eleifend tellus a enim sodales, a efficitur odio euismod. Aenean non consequat lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce quis eleifend ipsum, sit amet posuere ligula.</p>
-        <div ref={image} className='relative w-[50%] h-[40vh]'>
-          <Image 
-            src={Picture}
-            placeholder='blur'
-            fill
-            style={{objectFit: "cover"}}
-          />
+       
         </div>
       </div>
-    </div>
+    </section>
   )
 }

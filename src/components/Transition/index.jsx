@@ -18,6 +18,7 @@ export default function TransitionLayout({ children }) {
     })
     
     useGSAP(() => {
+        
         //if page is not the current page
         if (children.key !== displayChildren.key) {
             exit();            
@@ -26,7 +27,7 @@ export default function TransitionLayout({ children }) {
     }, [children]) 
 
     return (
-        <div className="bg-white">
+        <div>
             {displayChildren}
         </div>
     )

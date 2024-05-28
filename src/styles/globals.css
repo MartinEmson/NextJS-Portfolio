@@ -1,3 +1,122 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@font-face {
+    font-family: myFont;
+    src: url('/Font/Futura\ Std\ Book.ttf');
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: titleFont;
+    src: url('/Font/Panchang\-Bold.otf');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: font;
+    src: url('/Font/SpaceGrotesk.ttf');
+    font-display: swap;
+  }
+  
+
+  #navTitle {
+    /* font-family: 'titleFont'; */
+  }
+
+  body, html {
+    font-family: 'font', fallback, sans-serif;
+    height: 100%;
+  }
+
+  .link {
+    transition: transform 0.2s ease-in;
+  }
+  
+  .link:hover {
+    transform: scale(1.1);
+
+  }
+
+section {
+  /* visibility: hidden; */
+}
+
+html.lenis, html.lenis body {
+    height: auto;
+  }
+  
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
+  }
+
+
+  .headerButtonContainer{
+      transform: scale(0);
+      right: 0px;
+z-index: 20;
+
+    .button{
+        margin: 20px;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: #464d63;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+
+    .burger {
+
+        &::after, &::before {
+          content: "";
+          display: block;
+          height: 1px;
+          width: 25%;
+          background-color: white;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          transition: transform 0.3s;
+        }
+      
+        &::after {
+          top: calc(50% - 5px);
+        }
+      
+        &::before {
+          top: calc(50% + 5px);
+        }
+      }
+      
+      .burgerActive {
+      
+        &::after {
+          transform: translateX(-50%) rotate(45deg);
+          top: 50%;
+        }
+      
+        &::before {
+          transform: translateX(-50%) rotate(-45deg);
+          top: 50%;
+        }
+      }   
+    }
+
