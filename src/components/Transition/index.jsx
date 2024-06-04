@@ -4,15 +4,30 @@ import { useGSAP } from "@gsap/react";
 import { TransitionContext } from "@/context/TransitionContext";
 gsap.registerPlugin(useGSAP);
 
+
+// index.jsx
+
+// The TransitionLayout component is a wrapper component that provides
+// transition animations to its children. It's typically used to wrap
+// the main part of your application in _app.js.
+
+// The TransitionLayout component takes one prop: `children`. This prop
+// is used to pass in the child components that you want to apply the
+// transition animations to.
+
+// The TransitionLayout component should be used in conjunction with
+// the TransitionContext provider, which provides the state of the
+// intro animation to the TransitionLayout and its children.
+
 export default function TransitionLayout({ children }) {
     const [displayChildren, setDisplayChildren] = useState(children)
-    const { timeline } = useContext(TransitionContext);
+    const { timeline, introFinished } = useContext(TransitionContext);
     const { contextSafe } = useGSAP(); 
 
     const exit = contextSafe( () => {
         timeline.play().then( () => {
-            window.scrollTo(0, 0)
             setDisplayChildren(children);
+            window.scrollTo(0, 0)
             timeline.pause().clear();
         })
     })
@@ -27,8 +42,8 @@ export default function TransitionLayout({ children }) {
     }, [children]) 
 
     return (
-        <div>
+        <main>
             {displayChildren}
-        </div>
+        </main>
     )
 }

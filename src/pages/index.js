@@ -1,55 +1,117 @@
-import { Inter } from "next/font/google";
-import Picture from '../../public/images/2.jpg'
-import Image from 'next/image';
-import { useGSAP } from '@gsap/react';
-import { TransitionContext } from '@/context/TransitionContext';
-import gsap from "gsap";
-import { useContext, useRef } from 'react';
+import { gsap } from 'gsap';
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import { TransitionContext } from "@/context/TransitionContext";
+import { useEffect, useRef, useContext } from 'react';
 import Projects from "./projects/projects.jsx";
-// import { ScrollTrigger } from "gsap/ScrollTrigger";
-// gsap.registerPlugin(ScrollTrigger) 
+import { Info } from "./about/info.jsx";
+import SplitType from 'split-type'
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const { timeline } = useContext(TransitionContext);
-  const container = useRef(null);
-  // const project = useRef(null);
-  const image = useRef();
+  const section = useRef(null);
+  const con = useRef(null);
+  const bgImage = useRef(null);
+  const titleRef = useRef(null);
 
-  useGSAP( () => {
-    const targets = gsap.utils.toArray(["div", image.current])
-    gsap.fromTo(targets, {y: 30, opacity: 0}, {y: 0, opacity: 1, duration: 2})
-    timeline.add(gsap.to(container.current, { opacity: 0 }))
-  }, {scope: container})
+  useGSAP(
+    () => {
+      const targets = gsap.utils.toArray([section.current, bgImage.current]);
+      gsap.fromTo(
+        targets,
+        {  opacity: 0 },
+        {  opacity: 1, duration: 2 }
+      );
+
+      timeline.add(gsap.to(section.current, { opacity: 0, duration: 1 }));
+    },
+    { scope: section}
+  );
+
+  useEffect(() => {
+    gsap.fromTo(bgImage.current, 
+      { opacity: 1 },
+      {
+        opacity: 0,
+        scrollTrigger: {
+          trigger: bgImage.current, // Use the background image as the trigger
+          start: 'top top', // Start when the top of the image hits the top of the viewport
+          end: 'bottom bottom', // End when the bottom of the image hits the bottom of the viewport
+          scrub: true,
+        },
+      }
+    );
+  }, []);
+  
+  useEffect(() => {
+    console.log(section.current); // Log the value of section.current to the console
+
+    gsap.to(section.current, 
+      {
+        backgroundColor: 'rgba(28, 29, 32, 1)', // End with full opacity
+        scrollTrigger: {
+          trigger: section.current, // Use the section as the trigger
+          start: 'top top', // Start when the top of the section hits the top of the viewport
+          end: 'bottom bottom', // End when the bottom of the section hits the bottom of the viewport
+          scrub: true,
+          toggleActions: 'restart none reverse none',
+        },
+      }
+    );
+  }, []);
 
 
+  useEffect(() => {
+    let typeSplit = new SplitType(titleRef.current, {
+      types: 'lines, words, chars',
+      tagName: 'span'
+    });
+  
+    gsap.from(typeSplit.chars, {
+      y: '100%',
+      opacity: 1,
+      duration: 0.25,
+      ease: 'power1.out',
+      stagger: 0.05,
+    });
+  }, []);
 
   return (
-      <section ref={container} className='flex flex-col'>
-      <div className="h-[100vh] w-full">
-        <div className="flex flex-col justify-center h-screen px-40">
-         <p className="text-2xl">Hi, im Martin!</p>
-         <div className="w-[20vw]">
-         <p>Im a recently graduated frontend developer with a special intreset in creative development!</p>
-        </div>
+    <section ref={section} className="flex flex-col relative text-white">
+      <div
+        ref={bgImage}
+        className="background-image"
+        style={{ 
+          backgroundImage: "url('/images/0911.png')", 
+          backgroundSize: 'cover', 
+          backgroundPosition: 'center', 
+          position: 'absolute',
+          filter: 'invert(30%)',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: -1,
+          opacity: 1, // Start with full opacity
+        }}
+      />
+      <div className="h-screen w-full relative z-10">
+        <div ref={con} className="absolute bottom-0 left-0 md:p-12 p-6 z-10">
+        <div className="text-anim">
+        <h1 ref={titleRef} className="md:text-[8rem] text-5xl font-thin pointer-events-none">
+            lindev
+          </h1>
+          {/* <h1 className="text-[10vw] pointer-events-none">
+            Frontend Developer
+          </h1> */}
+          </div>
         </div>
       </div>
-
-       
-
-        <div className="h-[120vh] w-full flex bg-c-black  z-0">
-        <Projects />
-
-
-        {/* <div className="w-full h-[80vh] bg-c-black"></div> */}
-        
-          {/* <div ref={image} className='relative w-[50%] h-[40vh]'>
-          <Image 
-            src={Picture}
-            placeholder='blur'
-            fill
-            style={{objectFit: "cover"}}
-          />
-        </div> */}
+      <Info id="info" />
+      <div className="h-auto w-full flex">
+        <Projects textColor="white" />
       </div>
     </section>
   );

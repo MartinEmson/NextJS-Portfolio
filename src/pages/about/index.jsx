@@ -1,32 +1,111 @@
-import React, { useRef, useContext } from 'react'
-import Picture from '../../../public/images/3.jpg'
-import Image from 'next/image';
-import { TransitionContext } from '@/context/TransitionContext';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-
+import React, { useRef, useContext, useEffect } from "react";
+import Picture from "../../../public/images/3.jpg";
+import Image from "next/image";
+import { TransitionContext } from "@/context/TransitionContext";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 export default function Index() {
-
   const { timeline } = useContext(TransitionContext);
   const container = useRef(null);
-  const image = useRef();
+  const sec = useRef();
+  const bgImage = useRef(null);
 
-  useGSAP( () => {
-    const targets = gsap.utils.toArray(["p", image.current])
-    gsap.fromTo(targets, {scale: 0.85, opacity: 0}, {scale: 1, opacity: 1, stagger: 0.25})
-    timeline.add(gsap.to(container.current, { opacity: 0 }))
-  }, {scope: container})
+  useGSAP(
+    () => {
+      {
+        const targets = gsap.utils.toArray([
+          container.current,
+          bgImage.current,
+        ]);
+        gsap.fromTo(
+          targets,
+          { opacity: 0, duration: 1 },
+          { opacity: 1, duration: 2 }
+        );
+        timeline.add(gsap.to(container.current, { opacity: 0, duration: 1 }));
+      }
+    },
+    { scope: container }
+  );
+
+  useEffect(() => {
+    // When the component mounts, set overflow to hidden on the body
+    document.body.style.overflowX = 'hidden';
+
+    return () => {
+      // When the component unmounts, reset the overflow property
+      document.body.style.overflowX = '';
+    };
+  }, []);
 
   return (
-    <section ref={container} className='h-[200vh] w-full pt-24'>
-      <div className="h-[100vh] w-5/6 flex flex-col gap-5 m-auto">
-        <p className="text-3xl text-left">About Me</p>
-        <div className='flex flex-col justify-center items-center'>
-        <p className="max-w-[50%] text-center">Sed ut rhoncus nibh. Cras eleifend tellus a enim sodales, a efficitur odio euismod. Aenean non consequat lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce quis eleifend ipsum, sit amet posuere ligula.</p>
-       
+    <section
+      ref={container}
+      className="w-full pt-24 text-c-black relative overflow-hidden"
+    >
+      <div
+        ref={bgImage}
+        className="background-image-about"
+        style={{
+          backgroundImage: "url('/images/0911.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          position: "absolute",
+          filter: "invert(30%)",
+          top: "-50%",
+          left: "-50%",
+          width: "200%",
+          height: "200%",
+          zIndex: -1,
+          opacity: 1,
+          transform: "rotate(90deg)",
+          overflow: "hidden",
+        }}
+      />
+      <div className="h-[100vh]">
+        <div className="h-full px-12"></div>
+      </div>
+      <div ref={sec} className="h-[100vh] w-full p-6 md:p-16">
+        <div className="flex pb-12">
+          <h2 className="text-4xl md:text-5xl md:pl-12">
+            {" "}
+            I can help you with
+          </h2>
+        </div>
+
+        <div className="flex flex-col md:flex-row justify-between w-full">
+          <div className="w-full md:w-1/3 justify-center md:pl-12">
+            <div className="border-t-2 pt-6"></div>
+            <h4 className="md:text-[2.5vw] text-3xl">Design</h4>
+            <p className="py-6">
+              Transform your ideas into stunning visual experiences. Whether you
+              need a complete brand overhaul or a fresh new look for your
+              website.{" "}
+            </p>
+          </div>
+
+          <div className="w-full md:w-1/3 justify-center md:pl-12">
+            <div className="border-t-2 pt-6"></div>
+            <h4 className="md:text-[2.5vw] text-3xl ">Development</h4>
+            <p className="py-6">
+              Bring your vision to life with robust and scalable development
+              solutions. I offer a range of services to build functional and
+              high-performing digital products.{" "}
+            </p>
+          </div>
+
+          <div className="w-full md:w-1/3 justify-center md:pl-12">
+            <div className="border-t-2 pt-6"></div>
+            <h4 className="md:text-[2.5vw] text-3xl">Consultation</h4>
+            <p className="py-6">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+              tempor dictum odio vitae blandit. Duis dolor justo, egestas vel
+              dolor tincidunt.
+            </p>
+          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

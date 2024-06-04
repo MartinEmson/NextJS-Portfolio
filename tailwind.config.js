@@ -7,8 +7,17 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundColor: ['active'],
+      textColor: ['active'],
+      
       colors: {
-        'c-black': '#1C1D20'
+        'c-black': '#1C1D20', 
+        'c-river': '#A07EE7',
+        'c-grass': '#7cfc00',
+        'c-cloud': '#607274',
+        'c-earth': '#B2A59B',
+        'c-gray': 'rgba(255, 255, 255, 0.225)',
+
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
