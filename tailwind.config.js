@@ -17,6 +17,7 @@ module.exports = {
         'c-cloud': '#607274',
         'c-earth': '#B2A59B',
         'c-gray': 'rgba(255, 255, 255, 0.225)',
+        'c-nestle': '#E3E3E3',
 
       },
       backgroundImage: {

@@ -25,7 +25,9 @@ export default function Home() {
         {  opacity: 1, duration: 2 }
       );
 
-      timeline.add(gsap.to(section.current, { opacity: 0, duration: 1 }));
+      const targets2 = [section.current, titleRef.current]; // include your actual refs
+
+      timeline.add(gsap.to(targets2, { opacity: 0, duration: 1 }));
     },
     { scope: section}
   );
@@ -69,13 +71,17 @@ export default function Home() {
       tagName: 'span'
     });
   
-    gsap.from(typeSplit.chars, {
-      y: '100%',
-      opacity: 1,
-      duration: 0.25,
-      ease: 'power1.out',
-      stagger: 0.05,
-    });
+    gsap.fromTo(typeSplit.chars, 
+      { y: '100%', opacity: 0 }, // starting state
+      { // ending state
+        delay: 1,
+        y: '0%',
+        opacity: 1,
+        duration: 0.5,
+        ease: 'power1.out',
+        stagger: 0.05,
+      }
+    );
   }, []);
 
   return (

@@ -53,7 +53,7 @@ export default function App({ Component, pageProps, router }) {
           content="This is my frontend portfolio. "
         ></meta>
       </Head>
-      {/* <Intro /> */}
+      <Intro />
       <Header divRef={divRef} />
 
       <Transition>

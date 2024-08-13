@@ -40,13 +40,16 @@ export const projects = [
 
 export default function Index() {
 
-  const colors = ["bg-c-black", "bg-c-cloud", "bg-c-river", "bg-c-earth"]; // Add more colors if needed
+  const colors = ["bg-c-nestle", "bg-c-cloud", "bg-c-nestle", "bg-c-earth"]; // Add more colors if needed
   
   const { timeline } = useContext(TransitionContext);
   const container = useRef(null);
   const bgImage = useRef(null);
   const liRefs = projects.map(() => useRef(null));
   const projectRef = useRef(null);
+  const title = useRef(null);
+  const lineRef = useRef(null);
+  const gridRef = useRef(null);
 
 
  //LocalStorage 
@@ -77,44 +80,47 @@ export default function Index() {
           { opacity: 0, duration: 1 },
           { opacity: 1, duration: 2 }
         );
+
         timeline.add(gsap.to(container.current, { opacity: 0, duration: 1 }));
       }
     },
     { scope: container }
   );
 
-  useGSAP(() => {
-      gsap.to(container.current, 
-      {
-        backgroundColor: 'rgba(255, 255, 255, 0.6)', // End with white color
-        scrollTrigger: {
-          trigger: container.current, // Use the section as the trigger
-          start: 'top top', // Start when the top of the section hits the top of the viewport
-          end: 'bottom bottom', // End when the bottom of the section hits the bottom of the viewport
-          scrub: true,
-          toggleActions: 'restart none reverse none',
-        },
-      }
-    );
-  }, []);
+  
+
+  // useGSAP(() => {
+  //     gsap.to(container.current, 
+  //     {
+  //       backgroundColor: 'rgba(255, 255, 255, 0.6)', // End with white color
+  //       scrollTrigger: {
+  //         trigger: container.current, // Use the section as the trigger
+  //         start: 'top top', // Start when the top of the section hits the top of the viewport
+  //         end: 'bottom bottom', // End when the bottom of the section hits the bottom of the viewport
+  //         scrub: true,
+  //         toggleActions: 'restart none reverse none',
+  //       },
+  //     }
+  //   );
+  // }, []);
+
+  // useEffect(() => {
+  //   const targets = liRefs.map(ref => ref.current);
+  //   gsap.fromTo(
+  //     targets,
+  //     { opacity: 0, y: 100, duration: 1, ease: "power2.inOut", }, // start 30px below their original position
+  //     { opacity: 1, y: 0, duration: 1 } // end at their original position
+  //   );
+  // }, [liRefs]);
+
 
   useEffect(() => {
-    const targets = liRefs.map(ref => ref.current);
-    gsap.fromTo(
-      targets,
-      { opacity: 0, y: 30, duration: 1 }, // start 30px below their original position
-      { opacity: 1, y: 0, duration: 1 } // end at their original position
-    );
-  }, [liRefs]);
-
-
-  useEffect(() => {
-    let typeSplit = new SplitType(projectRef.current, {
+    let typeSplit = new SplitType(title.current, {
       types: 'lines, words, chars',
       tagName: 'span'
     });
   
-    gsap.fromTo(typeSplit.words, 
+    gsap.fromTo(typeSplit.chars, 
       { y: '100%', opacity: 0 }, // starting state
       { // ending state
         y: '0%',
@@ -122,12 +128,6 @@ export default function Index() {
         duration: 0.25,
         ease: 'power1.out',
         stagger: 0.03,
-        scrollTrigger: {
-          trigger: projectRef.current,
-          start: 'top 90%',
-          end: 'top top',
-          scrub: true,
-        },
       }
     );
   }, []);
@@ -136,30 +136,33 @@ export default function Index() {
   return (
     <section
       ref={container}
-      className="flex flex-col relative py-24 md:px-20 h-[300vh] w-screen"
+      className="flex flex-col relative py-24 md:px-20 h-[240vh] w-screen overflow-hidden"
     >
       <div
         ref={bgImage}
         className="background-image"
         style={{
-          backgroundImage: "url('/images/moon.png')",
+          backgroundImage: "url('/images/0911.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           position: "absolute",
-          filter: "invert(80%)",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
+          filter: "invert(40%)",
+          top: "-50%",
+          left: "-50%",
+          width: "200%",
+          height: "200%",
           zIndex: -1,
           opacity: 1,
+          transform: "rotate(200deg)",
+          overflow: "hidden",
         }}
       />
 
-      <div className="h-[40vh] w-auto flex flex-row justify-between items-center p-6">
-        <h1 id="otherTitle" className="text-4xl flex font-bold justify-center">Featured Projects</h1>
+      <div className="h-[40vh] w-auto flex flex-row justify-between items-center p-6 text-white">
+        <h1 ref={title} id="otherTitle" className="text-4xl flex font-bold justify-center">Featured Projects</h1>
         <div className="md:flex gap-x-4 z-1 hidden">
-          <div
+          <div 
+            ref={gridRef}
             className={`link rounded-full p-6 box-border w-[75px] cursor-pointer ${
               activeButton === "grid" ? "bg-c-black" : "bg-white"
             }`}
@@ -212,6 +215,7 @@ export default function Index() {
             </svg>
           </div>
           <div
+            ref={lineRef}
             className={`link rounded-full p-6 box-border w-[75px] cursor-pointer ${
               activeButton === "line" ? "bg-c-black" : "bg-white"
             }`}
@@ -292,7 +296,7 @@ export default function Index() {
       </div>
 
       {activeButton === 'grid' ? (
-        <div className="grid-layout">
+        <div className="grid-layout text-white">
           <ul className="w-full grid grid-cols-1 md:grid-cols-2">
             {projects.map((project, index) => (
               <li key={index} ref={liRefs[index]} className="pb-20 flex items-center justify-center">
@@ -303,14 +307,14 @@ export default function Index() {
                   className="project rounded-lg"
                 >
                   <div
-                    className={`flex rounded-2xl justify-center items-center h-[380px] w-[380px] md:h-[400px] md:w-[600px] p-6 px-8 ${
+                    className={`flex rounded-2xl justify-center items-center h-[380px] w-[380px] md:h-[400px] md:w-[600px] ${
                       colors[index % colors.length]
                     }`}
                   >
                     <img
                       src={project.picture}
                       alt={project.name}
-                      className="object-contain h-full w-full image"
+                      className="object-cover h-full w-full image rounded-2xl"
                     />
                   </div>
                   <div className="">
@@ -331,7 +335,7 @@ export default function Index() {
         </div>
       ) : (
         <div className="line-layout p-6 ">
-        <div className="w-full text-xs flex flex-row mb-6">
+        <div className="w-full text-xs flex flex-row mb-6 text-white">
         <div className="w-3/6">
           PROJECT
         </div>
@@ -344,10 +348,10 @@ export default function Index() {
         </div>
           <ul>
             {projects.map((project, index) => (
-              <li ref={liRefs[index]} className="text-c-black">
+              <li ref={liRefs[index]} className="text-white">
                 <a href={project.link} className="project">
                 <div className="border border-c-gray"></div>
-                  <div className="flex flex-row justify-center items-center p-6">
+                  <div className="flex flex-row justify-center items-center p-6 image">
                     <h4 className="w-3/6 text-3xl">
                       <span>{project.name}</span>
                     </h4>

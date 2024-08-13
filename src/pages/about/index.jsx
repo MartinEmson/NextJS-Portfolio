@@ -4,12 +4,18 @@ import Image from "next/image";
 import { TransitionContext } from "@/context/TransitionContext";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Index() {
   const { timeline } = useContext(TransitionContext);
   const container = useRef(null);
   const sec = useRef();
   const bgImage = useRef(null);
+  const about = useRef(null);
+  const aboutTwo = useRef(null);
+  const aboutThree = useRef(null);
+
 
   useGSAP(
     () => {
@@ -30,6 +36,29 @@ export default function Index() {
   );
 
   useEffect(() => {
+    const elements = [about.current, aboutTwo.current, aboutThree.current];
+  
+    elements.forEach((element) => {
+      gsap.fromTo(
+        element,
+        { autoAlpha: 0, y: 50 }, // from
+        { // to
+          duration: 1,
+          autoAlpha: 1,
+          y: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 75%',
+            end: 'bottom 25%',
+            scrub: true,
+          },
+        }
+      );
+    });
+  }, []);
+
+  useEffect(() => {
     // When the component mounts, set overflow to hidden on the body
     document.body.style.overflowX = 'hidden';
 
@@ -42,7 +71,7 @@ export default function Index() {
   return (
     <section
       ref={container}
-      className="w-full pt-24 text-c-black relative overflow-hidden"
+      className="w-full pt-24 text-white relative overflow-hidden"
     >
       <div
         ref={bgImage}
@@ -63,25 +92,27 @@ export default function Index() {
           overflow: "hidden",
         }}
       />
-      <div className="h-[100vh]">
-        <div className="h-full px-12"></div>
+      <div className="h-[70vh]">
+        <div className="h-full w-4/6 mx-auto">
+          <h1 className="text-5xl mt-16">Who am I?</h1>
+        </div>
       </div>
       <div ref={sec} className="h-[100vh] w-full p-6 md:p-16">
+      <div className="mx-auto">
         <div className="flex pb-12">
-          <h2 className="text-4xl md:text-5xl md:pl-12">
-            {" "}
+          <h2 className="text-4xl md:text-5xl md:pl-6">
             I can help you with
           </h2>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between w-full">
-          <div className="w-full md:w-1/3 justify-center md:pl-12">
+        <div ref={about} className="flex flex-col md:flex-row justify-between w-full">
+          <div className="w-full md:w-1/3 justify-center md:pl-6">
             <div className="border-t-2 pt-6"></div>
             <h4 className="md:text-[2.5vw] text-3xl">Design</h4>
             <p className="py-6">
               Transform your ideas into stunning visual experiences. Whether you
               need a complete brand overhaul or a fresh new look for your
-              website.{" "}
+              website.
             </p>
           </div>
 
@@ -91,8 +122,8 @@ export default function Index() {
             <p className="py-6">
               Bring your vision to life with robust and scalable development
               solutions. I offer a range of services to build functional and
-              high-performing digital products.{" "}
-            </p>
+              high-performing digital products.
+            </p>  
           </div>
 
           <div className="w-full md:w-1/3 justify-center md:pl-12">
@@ -103,6 +134,7 @@ export default function Index() {
               tempor dictum odio vitae blandit. Duis dolor justo, egestas vel
               dolor tincidunt.
             </p>
+          </div>
           </div>
         </div>
       </div>

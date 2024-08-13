@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { useEffect, useRef } from 'react';
 import SplitType from 'split-type';
 
+
 gsap.registerPlugin(ScrollTrigger);
 
 
@@ -68,14 +69,17 @@ useEffect(() => {
     
     <div className='w-6/12 h-full flex justify-center items-center relative'>
     <div className='md:h-[70vh] md:w-[70vh] relative'> 
-    <Image 
-      src="/images/hs.png"
-      alt="Picture of Martin Lindevall"
-      layout="fill"
-      objectFit="cover"
-      className='image rounded-full absolute pr-20 filter'
-      style
+    <div className="image-container relative" style={{ width: '100%', height: '100%' }}>
+      <Image 
+        src="/images/hs.png"
+        alt="Picture of Martin Lindevall"
+        className='rounded-full absolute pr-20 filter'
+        fill // Use fill layout for Next.js 13
+        style={{
+          objectFit: 'cover', // Ensure the image covers the area of the container
+        }}
       />
+    </div>
     </div>
  </div>
  </div>

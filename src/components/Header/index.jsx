@@ -13,8 +13,8 @@ export default function Index({divRef}) {
   const [isActive, setIsActive] = useState(false);
   const burger = useRef(null);
   
-  const router = useRouter();
-const isProjectsPage = router.pathname.includes('/projects');
+  // const router = useRouter();
+// const isProjectsPage = router.pathname.includes('/projects');
 
 
 // Scrolltrigger Navmenu
@@ -68,7 +68,7 @@ const handleClick = () => {
 
 
   return (
-<nav className={`absolute top-0 left-0 flex w-full justify-between px-6 md:px-12 py-8 z-20 text-base ${isProjectsPage ? 'text-black' : 'text-white'}`}>
+<nav className='absolute top-0 left-0 flex w-full justify-between px-6 md:px-12 py-8 z-20 text-base text-white'>
 <div className='flex-col'>
     <h1 id="navTitle" className='text-lg'><Link scroll={false} href="/">Martin Lindevall</Link></h1> 
     {/* <h2 className='text-2xl ml-3'>Frontend Developer & Designer</h2> */}
